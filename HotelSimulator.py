@@ -5,9 +5,16 @@ nb_of_rooms = 110
 initial_room_rate= 170.0
 room_rate = initial_room_rate
 
+def calculate_kpis(rooms_sold, room_rate, nb_of_rooms):
+    revenue = rooms_sold * room_rate
+    occupancy = rooms_sold / nb_of_rooms* 100
+    adr = revenue / rooms_sold if rooms_sold > 0 else 0
+    revpar = revenue / nb_of_rooms
+    return {"revenue": revenue, "occupancy": occupancy, "adr": adr, "revpar": revpar}
+
 # Menu
 
-choice = input (" Choose simulation mode (reporting / simulation)").lower()
+choice = input (" Choose simulation mode (reporting / simulation)").strip().lower()
 if choice == "reporting":
     while True:
        try:
@@ -23,7 +30,7 @@ if choice == "reporting":
         
 elif choice == "simulation":
     while True:
-         demand_level = input(" Choose demand level (Low / Medium / High): ").lower()
+         demand_level = input(" Choose demand level (Low / Medium / High): ").lower().strip()
          if demand_level == "low":
              rooms_sold = 40
              room_rate = 140
@@ -44,8 +51,12 @@ else:
 
 
 # Calculation
-actual_nightly_revenue = rooms_sold * room_rate
-occupancy_rate = rooms_sold / nb_of_rooms*100
+kpis = calculate_kpis(rooms_sold, room_rate, nb_of_rooms)
+occupancy_rate = kpis ['occupancy']
+actual_nightly_revenue = kpis['revenue']
+adr = kpis ['adr']
+RevPar = kpis['revpar']
+
 if occupancy_rate < 50:
     print ("The occupancy rate is low")
 elif 50 <= occupancy_rate <= 80:
@@ -61,8 +72,6 @@ else:
     recommendation = "consider increasing rate"
 
 maximum_nightly_revenue = nb_of_rooms * room_rate
-adr = actual_nightly_revenue / rooms_sold
-RevPar = actual_nightly_revenue / nb_of_rooms
 rooms_available = nb_of_rooms - rooms_sold
 potential_extra_revenue = rooms_available * room_rate
 revenue_gap = maximum_nightly_revenue - actual_nightly_revenue
