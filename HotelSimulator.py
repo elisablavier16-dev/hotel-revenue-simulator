@@ -1,3 +1,5 @@
+from hotel_model import calculate_kpis, simulate_night
+
 
 # Hotel settings
 hotel_name = "Lizzy Hotel Amsterdam"
@@ -5,12 +7,6 @@ nb_of_rooms = 110
 initial_room_rate= 170.0
 room_rate = initial_room_rate
 
-def calculate_kpis(rooms_sold, room_rate, nb_of_rooms):
-    revenue = rooms_sold * room_rate
-    occupancy = rooms_sold / nb_of_rooms* 100
-    adr = revenue / rooms_sold if rooms_sold > 0 else 0
-    revpar = revenue / nb_of_rooms
-    return {"revenue": revenue, "occupancy": occupancy, "adr": adr, "revpar": revpar}
 
 # Menu
 
@@ -27,7 +23,18 @@ if choice == "reporting":
 
        except ValueError:
             print ("Please enter a number")
-        
+    while True:
+       try :
+        room_rate = float(input('enter night rate?'))
+
+        if room_rate <= 0:
+            print('Invalid data, enter a minimum value of 1')
+        else:
+            break
+       except ValueError:
+            print("Please enter a number")
+
+
 elif choice == "simulation":
     while True:
          demand_level = input(" Choose demand level (Low / Medium / High): ").lower().strip()
