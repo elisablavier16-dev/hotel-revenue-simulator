@@ -39,10 +39,15 @@ def simulate_night (date, room_rate, nb_of_rooms):
     return kpis
 
 def get_dynamic_rate(date):
-    if date.weekday() >= 4:      # vendredi, samedi, dimanche
-        return 200               # prix du week-end
+    expected_occupancy = expected_demand(date) / 110 * 100
+    if expected_occupancy >= 85:
+        return 230
+    elif expected_occupancy >= 60:
+        return 190
+    elif expected_occupancy >= 40:
+        return 160
     else:
-        return 150               # prix de la semaine
+        return 130
 
 def split_by_channel(night):
     rows = []
@@ -73,3 +78,8 @@ def expected_demand(date):
         demand = 110        # Nouvel an : complet
     return demand
 
+from datetime import date
+print(get_dynamic_rate(date(2026, 1, 1)))    # Nouvel an
+print(get_dynamic_rate(date(2026, 7, 18)))   # samedi d'été
+print(get_dynamic_rate(date(2026, 1, 14)))   # mercredi d'hiver
+print(get_dynamic_rate(date(2026, 12, 25)))  # Noël

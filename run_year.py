@@ -16,7 +16,7 @@ channel_rows = []
 for day_number in range(365):
     current_date = start_date + timedelta(days=day_number)
     dynamic_rate = get_dynamic_rate(current_date)
-    night = simulate_night(current_date, dynamic_rate, NB_OF_ROOMS)
+    night = simulate_night(current_date, ROOM_RATE, NB_OF_ROOMS)
     nights.append(night)
     channel_rows.extend(split_by_channel(night))
 df = pd.DataFrame(nights)
